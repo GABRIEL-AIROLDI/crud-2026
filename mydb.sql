@@ -17,15 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
 
---
--- Banco de dados: `mydb`
---
 
--- --------------------------------------------------------
-
---
--- Estrutura para tabela `carro`
---
 
 CREATE TABLE `carro` (
   `CarroID` int(11) NOT NULL,
@@ -37,9 +29,7 @@ CREATE TABLE `carro` (
   `ManutencaoID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
---
--- Despejando dados para a tabela `carro`
---
+
 
 INSERT INTO `carro` (`CarroID`, `modelo`, `marca`, `Ano`, `cor`, `ProprietarioID`, `ManutencaoID`) VALUES
 (1, 'Civic', 'Honda', 2022, 'Preto', 1, 1),
@@ -68,11 +58,8 @@ INSERT INTO `carro` (`CarroID`, `modelo`, `marca`, `Ano`, `cor`, `ProprietarioID
 (24, 'Dolphin', 'BYD', 2025, 'Azul', 4, 4),
 (25, 'Yaris', 'Toyota', 2024, 'Prata', 5, 5);
 
--- --------------------------------------------------------
 
---
--- Estrutura para tabela `manutencao`
---
+
 
 CREATE TABLE `manutencao` (
   `ManutencaoID` int(11) NOT NULL,
@@ -80,9 +67,8 @@ CREATE TABLE `manutencao` (
   `CarroID` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
---
--- Despejando dados para a tabela `manutencao`
---
+
+
 
 INSERT INTO `manutencao` (`ManutencaoID`, `descricao`, `CarroID`) VALUES
 (1, 'Troca de óleo e filtro', NULL),
@@ -111,20 +97,12 @@ INSERT INTO `manutencao` (`ManutencaoID`, `descricao`, `CarroID`) VALUES
 (24, 'Troca de Velas', NULL),
 (25, 'Revisão Geral', NULL);
 
--- --------------------------------------------------------
-
---
--- Estrutura para tabela `proprietario`
---
-
+-
 CREATE TABLE `proprietario` (
   `ProprietarioID` int(11) NOT NULL,
   `Nome` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
---
--- Despejando dados para a tabela `proprietario`
---
 
 INSERT INTO `proprietario` (`ProprietarioID`, `Nome`) VALUES
 (1, 'João Silva'),
@@ -153,58 +131,34 @@ INSERT INTO `proprietario` (`ProprietarioID`, `Nome`) VALUES
 (24, 'Diego Lopes'),
 (25, 'Elena Pereira');
 
---
--- Índices para tabelas despejadas
---
 
---
--- Índices de tabela `carro`
---
 ALTER TABLE `carro`
   ADD PRIMARY KEY (`CarroID`),
   ADD KEY `fk_carrro_manutencao` (`ManutencaoID`);
 
---
--- Índices de tabela `manutencao`
---
 ALTER TABLE `manutencao`
   ADD PRIMARY KEY (`ManutencaoID`);
 
---
--- Índices de tabela `proprietario`
---
+
 ALTER TABLE `proprietario`
   ADD PRIMARY KEY (`ProprietarioID`);
 
---
--- AUTO_INCREMENT para tabelas despejadas
---
 
---
--- AUTO_INCREMENT de tabela `carro`
---
+
 ALTER TABLE `carro`
   MODIFY `CarroID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
---
--- AUTO_INCREMENT de tabela `manutencao`
---
+-
 ALTER TABLE `manutencao`
   MODIFY `ManutencaoID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
---
--- AUTO_INCREMENT de tabela `proprietario`
---
+
 ALTER TABLE `proprietario`
   MODIFY `ProprietarioID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
---
--- Restrições para tabelas despejadas
---
 
---
--- Restrições para tabelas `carro`
---
+
+
 ALTER TABLE `carro`
   ADD CONSTRAINT `fk_carrro_manutencao` FOREIGN KEY (`ManutencaoID`) REFERENCES `manutencao` (`ManutencaoID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 COMMIT;
