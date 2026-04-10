@@ -1,15 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    
-
-
 <?php
 $conn = new mysqli("localhost", "root", "", "mydb");
 
@@ -18,7 +6,6 @@ if ($conn->connect_error) {
 }
 
 $editData = null;
-
 
 if (isset($_GET['delete'])) {
     $id = (int)$_GET['delete'];
@@ -62,46 +49,46 @@ $carros = $conn->query("SELECT * FROM carro");
 <head>
     <meta charset="UTF-8">
     <title>Gerenciamento de Carros</title>
-
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<div class="menu-navegacao">
+    <a href="index.php" class="btn-menu">Carros</a>
+    <a href="listamanutencao.php" class="btn-menu">Manutenções</a>
+    <a href="listaproprietarios.php" class="btn-menu">Proprietários</a>
 
+    <?php if (isset($_SESSION['logado']) && $_SESSION['logado'] === true): ?>
+        <a href="logout.php" class="btn-menu" style="background-color: #e74c3c;">Sair (<?= $_SESSION['usuario_nome'] ?>)</a>
+    <?php else: ?>
+        <a href="login.php" class="btn-menu btn-login">Login</a>
+    <?php endif; ?>
+</div>
+</div>
+</div>
     <h2><?= $editData ? "Editar Carro" : "Adicionar Novo Carro" ?></h2>
     
     <div class="form-container">
         <form method="POST">
             <input type="hidden" name="id" value="<?= $editData['CarroID'] ?? '' ?>">
+            <label>Modelo: <input type="text" name="modelo" value="<?= $editData['modelo'] ?? '' ?>" required></label>
+            <label>Marca: <input type="text" name="marca" value="<?= $editData['marca'] ?? '' ?>" required></label>
+            <label>Ano: <input type="number" name="ano" value="<?= $editData['Ano'] ?? '' ?>" required></label>
+            <label>Cor: <input type="text" name="cor" value="<?= $editData['cor'] ?? '' ?>" required></label>
             
-            <label>Modelo:</label>
-            <input type="text" name="modelo" value="<?= $editData['modelo'] ?? '' ?>" required>
+            <button type="submit" name="salvar">Salvar Carro</button>
             
-            <label>Marca:</label>
-            <input type="text" name="marca" value="<?= $editData['marca'] ?? '' ?>" required>
-            
-            <label>Ano:</label>
-            <input type="number" name="ano" value="<?= $editData['Ano'] ?? '' ?>" required>
-            
-            <label>Cor:</label>
-            <input type="text" name="cor" value="<?= $editData['cor'] ?? '' ?>" required>
-            
-            <button type="submit" name="salvar">Salvar</button>
             <?php if ($editData): ?>
-                <a href="index.php">Cancelar</a>
+                <a href="index.php" class="btn-cancelar">Cancelar</a>
+                <a href="index.php" class="btn-login">Login</a>
+
             <?php endif; ?>
         </form>
     </div>
 
-    <hr>
-
     <table>
         <thead>
             <tr>
-                <th>ID</th>
-                <th>Modelo</th>
-                <th>Marca</th>
-                <th>Ano</th>
-                <th>Cor</th>
-                <th>Ações</th>
+                <th>ID</th><th>Modelo</th><th>Marca</th><th>Ano</th><th>Cor</th><th>Ações</th>
             </tr>
         </thead>
         <tbody>
@@ -114,14 +101,14 @@ $carros = $conn->query("SELECT * FROM carro");
                 <td><?= $row['cor'] ?></td>
                 <td>
                     <a class="edit" href="?edit=<?= $row['CarroID'] ?>">Editar</a>
-                    <a class="delete" href="?delete=<?= $row['CarroID'] ?>" 
-                       onclick="return confirm('Excluir este carro?')">Excluir</a>
+                    <a class="delete" href="?delete=<?= $row['CarroID'] ?>" onclick="return confirm('Excluir este carro?')">Excluir</a>
                 </td>
             </tr>
             <?php endwhile; ?>
         </tbody>
     </table>
-    
 
 </body>
 </html>
+<?php 
+

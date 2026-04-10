@@ -1,47 +1,97 @@
-<?php
-include_once 'conexao.php';
+<?php 
+include_once 'conexao.php'; 
+
+$editData = null;
+
+if (isset($_GET['delete'])) {
+    $id = (int)$_GET['delete'];
+    $conn->query("DELETE FROM proprietario WHERE ProprietarioID = $id");
+    header("Location: listaproprietarios.php");
+    exit;
+}
+
+if (isset($_GET['edit'])) {
+    $id = (int)$_GET['edit'];
+    $result = $conn->query("SELECT * FROM proprietario WHERE ProprietarioID = $id");
+    if ($result && $result->num_rows > 0) {
+        $editData = $result->fetch_assoc();
+    }
+}
+
+if (isset($_POST['salvar'])) {
+    $id = $_POST['id'];
+    $nome = $_POST['nome'];
+
+    if (!empty($id)) {
+        // Atualiza
+        $sql = "UPDATE proprietario SET Nome='$nome' WHERE ProprietarioID=$id";
+    } else {
+        // Insere novo
+        $sql = "INSERT INTO proprietario (Nome) VALUES ('$nome')";
+    }
+    
+    $conn->query($sql);
+    header("Location: listaproprietarios.php");
+    exit;
+}
+
+$proprietarios = $conn->query("SELECT * FROM proprietario");
 ?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Sistema Oficina - Proprietários</title>
+    <title>Gerenciar Proprietários</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Controle da Oficina</h1>
-    <section id="proprietarios">
-        <h2>Listagem de Proprietários</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Nome</th>
-                    <th>Ações</th>
-                </tr>
-            </thead>
-            <tbody>
-            <?php
-            $sql_prop = "SELECT * FROM proprietario"; 
-            $resultado_prop = $conn->query($sql_prop);
 
-            if ($resultado_prop && $resultado_prop->num_rows > 0) {
-                while($row = $resultado_prop->fetch_assoc()) {
-                    echo "<tr>";
-                    echo "<td>" . $row['id'] . "</td>";
-                    echo "<td>" . $row['nome'] . "</td>";
-                    echo "<td>
-                            <button id='editarprop-" . $row['id'] . "'>Editar</button>
-                            <button id='excluirprop-" . $row['id'] . "'>Excluir</button>
-                          </td>";
-                    echo "</tr>";
-                }
-            } else {
-                echo "<tr><td colspan='3'>Nenhum proprietário encontrado.</td></tr>";
-            }
-            ?>
-            </tbody>
-        </table>
-    </section>
+    <div class="menu-navegacao">
+        <a href="index.php" class="btn-menu"> Carros</a>
+        <a href="listaproprietarios.php" class="btn-menu"> Proprietários</a>
+        <a href="listamanutencao.php" class="btn-menu"> Manutenção</a>
+    </div>
+
+    <h2><?= $editData ? "Editar Proprietário" : "Cadastrar Novo Proprietário" ?></h2>
+    
+    <div class="form-container">
+        <form method="POST">
+            <input type="hidden" name="id" value="<?= $editData['ProprietarioID'] ?? '' ?>">
+            
+            <label>Nome Completo: 
+                <input type="text" name="nome" value="<?= $editData['Nome'] ?? '' ?>" required>
+            </label>
+            
+            <button type="submit" name="salvar">Salvar Registro</button>
+            
+            <?php if ($editData): ?>
+                <a href="listaproprietarios.php" class="btn-cancelar">Cancelar</a>
+            <?php endif; ?>
+        </form>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php while ($row = $proprietarios->fetch_assoc()): ?>
+            <tr>
+                <td><?= $row['ProprietarioID'] ?></td>
+                <td><?= $row['Nome'] ?></td>
+                <td>
+                    <a class="edit" href="?edit=<?= $row['ProprietarioID'] ?>">Editar</a>
+                    <a class="delete" href="?delete=<?= $row['ProprietarioID'] ?>" onclick="return confirm('Excluir este proprietário?')">Excluir</a>
+                </td>
+            </tr>
+            <?php endwhile; ?>
+        </tbody>
+    </table>
+
 </body>
 </html>
