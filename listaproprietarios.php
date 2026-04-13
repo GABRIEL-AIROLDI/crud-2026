@@ -1,4 +1,11 @@
-<?php 
+<?php
+session_start(); 
+
+$conn = new mysqli("localhost", "root", "", "mydb");
+
+if ($conn->connect_error) {
+    die("Falha na conexão: " . $conn->connect_error);
+}
 include_once 'conexao.php'; 
 
 $editData = null;
@@ -47,13 +54,20 @@ $proprietarios = $conn->query("SELECT * FROM proprietario");
 </head>
 <body>
 
-    <div class="menu-navegacao">
-        <a href="index.php" class="btn-menu"> Carros</a>
-        <a href="listaproprietarios.php" class="btn-menu"> Proprietários</a>
-        <a href="listamanutencao.php" class="btn-menu"> Manutenção</a>
-    </div>
+  <div class="menu-navegacao">
+    <a href="index.php" class="btn-menu">Carros</a>
+    <a href="listamanutencao.php" class="btn-menu">Manutenções</a>
+    <a href="listaproprietarios.php" class="btn-menu">Proprietários</a>
 
-    <h2><?= $editData ? "Editar Proprietário" : "Cadastrar Novo Proprietário" ?></h2>
+    <?php if (isset($_SESSION['logado']) && $_SESSION['logado'] === true): ?>
+        <a href="logout.php" class="btn-menu">
+            Sair (<?= htmlspecialchars($_SESSION['usuario_nome']) ?>)
+        </a>
+    <?php else ?>
+        <a href="login.php" class="btn-menu btn-login">Login</a>
+    <?php endif ?>
+</div>
+    <h2><?= $editData  "Editar Proprietário"  "Cadastrar Novo Proprietário" ?></h2>
     
     <div class="form-container">
         <form method="POST">
@@ -67,7 +81,7 @@ $proprietarios = $conn->query("SELECT * FROM proprietario");
             
             <?php if ($editData): ?>
                 <a href="listaproprietarios.php" class="btn-cancelar">Cancelar</a>
-            <?php endif; ?>
+            <?php endif ?>
         </form>
     </div>
 

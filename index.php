@@ -1,4 +1,10 @@
 <?php
+session_start(); 
+$conn = new mysqli("localhost", "root", "", "mydb");
+
+if ($conn->connect_error) {
+    die("Falha na conexão: " . $conn->connect_error);
+}
 $conn = new mysqli("localhost", "root", "", "mydb");
 
 if ($conn->connect_error) {
@@ -59,9 +65,9 @@ $carros = $conn->query("SELECT * FROM carro");
 
     <?php if (isset($_SESSION['logado']) && $_SESSION['logado'] === true): ?>
         <a href="logout.php" class="btn-menu" style="background-color: #e74c3c;">Sair (<?= $_SESSION['usuario_nome'] ?>)</a>
-    <?php else: ?>
+    <?php else ?>
         <a href="login.php" class="btn-menu btn-login">Login</a>
-    <?php endif; ?>
+    <?php endif ?>
 </div>
 </div>
 </div>

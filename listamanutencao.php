@@ -1,4 +1,11 @@
-<?php 
+<?php
+session_start(); 
+
+$conn = new mysqli("localhost", "root", "", "mydb");
+
+if ($conn->connect_error) {
+    die("Falha na conexão: " . $conn->connect_error);
+}
 include_once 'conexao.php'; 
 
 $editData = null;
@@ -51,9 +58,9 @@ $manutencoes = $conn->query("SELECT * FROM manutencao");
 
     <?php if (isset($_SESSION['logado']) && $_SESSION['logado'] === true): ?>
         <a href="logout.php" class="btn-menu" style="background-color: #e74c3c;">Sair (<?= $_SESSION['usuario_email'] ?>)</a>
-    <?php else: ?>
+    <?php else ?>
         <a href="login.php" class="btn-menu btn-login">Login</a>
-    <?php endif; ?>
+    <?php endif ?>
 </div>
     <h2><?= $editData ? "Editar Manutenção" : "Registrar Nova Manutenção" ?></h2>
     
