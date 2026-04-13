@@ -44,19 +44,12 @@ INSERT INTO `carro` (`CarroID`, `modelo`, `marca`, `Ano`, `cor`, `ProprietarioID
 (10, 'Yaris', 'Toyota', 2024, 'Azul', 5, 5),
 (11, 'Mustang', 'FordManual', 2024, 'Laranja', 1, 1),
 (12, '208', 'Pegout', 2022, 'Branco', 2, 2),
-(13, 'Sandero', 'Renault', 2020, 'Prata', 3, 3),
 (14, 'Dolphin', 'BYD', 2025, 'Azul', 4, 4),
-(15, 'Yaris', 'Toyota', 2024, 'Prata', 5, 5),
-(16, 'Mustang', 'FordManual', 2024, 'Laranja', 1, 1),
 (17, '208', 'Pegout', 2022, 'Branco', 2, 2),
-(18, 'Sandero', 'Renault', 2020, 'Prata', 3, 3),
 (19, 'Dolphin', 'BYD', 2025, 'Azul', 4, 4),
-(20, 'Yaris', 'Toyota', 2024, 'Prata', 5, 5),
-(21, 'Mustang', 'FordManual', 2024, 'Laranja', 1, 1),
 (22, '208', 'Pegout', 2022, 'Branco', 2, 2),
-(23, 'Sandero', 'Renault', 2020, 'Prata', 3, 3),
 (24, 'Dolphin', 'BYD', 2025, 'Azul', 4, 4),
-(25, 'Yaris', 'Toyota', 2024, 'Prata', 5, 5);
+
 
 
 
@@ -77,24 +70,17 @@ INSERT INTO `manutencao` (`ManutencaoID`, `descricao`, `CarroID`) VALUES
 (4, 'Reparo na parte elétrica', NULL),
 (5, 'Pintura do para-choque', NULL),
 (6, 'Troca  Pastilhas', NULL),
-(7, 'Alinhamento ', NULL),
-(8, 'Limpeza de Ar ', NULL),
 (9, 'Troca de Velas', NULL),
 (10, 'Revisão ', NULL),
-(11, 'Troca de Pastilhas', NULL),
 (12, 'Alinhamento 3D', NULL),
-(13, 'Limpeza de Ar Condicionado', NULL),
 (14, 'Troca de Velas', NULL),
 (15, 'Revisão Geral', NULL),
-(16, 'Troca de Pastilhas', NULL),
 (17, 'Alinhamento 3D', NULL),
-(18, 'Limpeza de Ar Condicionado', NULL),
 (19, 'Troca de Velas', NULL),
 (20, 'Revisão Geral', NULL),
 (21, 'Troca de Pastilhas', NULL),
 (22, 'Alinhamento ', NULL),
 (23, 'Limpeza de Ar Condicionado', NULL),
-(24, 'Troca de Velas', NULL),
 (25, 'Revisão Geral', NULL);
 
 -
@@ -113,22 +99,18 @@ INSERT INTO `proprietario` (`ProprietarioID`, `Nome`) VALUES
 (6, 'Aline Ferreira'),
 (7, 'Bruno Mendes'),
 (8, 'Sandro Martins Costa'),
-(9, 'Diego Lopes'),
 (10, 'Elena Robson'),
 (11, 'Aline Ferreira'),
 (12, 'Bruno Mendes'),
-(13, 'Camila Rocha'),
 (14, 'Diego Lopes'),
 (15, 'Elena Nuves'),
 (16, 'Aline Ferreira'),
 (17, 'Bruno Mendes'),
 (18, 'Camila Rocha'),
-(19, 'Diego Lopes'),
 (20, 'Elena Nuves'),
 (21, 'Sandro Martins da Costa'),
 (22, 'Bruno hypolito'),
 (23, 'Nicolas Hayashi Hara'),
-(24, 'Diego Lopes'),
 (25, 'Elena Pereira');
 
 
