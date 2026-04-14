@@ -1,38 +1,28 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-pt">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
     <title>Login - Sistema Oficina</title>
     <link rel="stylesheet" href="style.css">
-    <style>
-      
-    </style>
 </head>
 <body>
     <div class="login">
         <div class="form-container login-box">
-            <h2>Acesso</h2>
+            <h2>Acesso ao Sistema</h2>
 
             <form action="processo-login.php" method="POST">
-            <label>E-mail: 
-        <input type="email" name="email" placeholder=" Insira um Email" required>
-    </label>
-    
-    <label>Senha: 
-        <input type="password" name="senha" placeholder=" Digite Sua senha" required>
-    </label>
-    
-    <button type="submit" name="entrar">Entrar </button>
-</form>
+                <label>E-mail: 
+                    <input type="email" name="email" placeholder="Insira o seu e-mail" required>
+                </label>
+                
+                <label>Senha: 
+                    <input type="password" name="senha" placeholder="Digite a sua senha" required>
+                </label>
+                
+                <button type="submit" name="entrar">Entrar</button>
+            </form>
+        </div>
+    </div>
 </body>
 </html>
-    

@@ -1,18 +1,10 @@
 <?php
-session_start(); 
-$conn = new mysqli("localhost", "root", "", "mydb");
-
-if ($conn->connect_error) {
-    die("Falha na conexão: " . $conn->connect_error);
-}
-$conn = new mysqli("localhost", "root", "", "mydb");
-
-if ($conn->connect_error) {
-    die("Falha na conexão: " . $conn->connect_error);
-}
+session_start();
+include_once 'conexao.php';
 
 $editData = null;
 
+// Lógica de Apagar
 if (isset($_GET['delete'])) {
     $id = (int)$_GET['delete'];
     $conn->query("DELETE FROM carro WHERE CarroID = $id");
@@ -20,14 +12,14 @@ if (isset($_GET['delete'])) {
     exit;
 }
 
+// Lógica de Editar (Carregar dados)
 if (isset($_GET['edit'])) {
     $id = (int)$_GET['edit'];
     $result = $conn->query("SELECT * FROM carro WHERE CarroID = $id");
-    if ($result && $result->num_rows > 0) {
-        $editData = $result->fetch_assoc();
-    }
+    $editData = $result->fetch_assoc();
 }
 
+// Lógica de Salvar
 if (isset($_POST['salvar'])) {
     $id = $_POST['id'];
     $modelo = $_POST['modelo'];
@@ -38,10 +30,8 @@ if (isset($_POST['salvar'])) {
     if (!empty($id)) {
         $sql = "UPDATE carro SET modelo='$modelo', marca='$marca', Ano='$ano', cor='$cor' WHERE CarroID=$id";
     } else {
-        $sql = "INSERT INTO carro (modelo, marca, Ano, cor, ProprietarioID, ManutencaoID) 
-                VALUES ('$modelo', '$marca', '$ano', '$cor', 1, 1)";
+        $sql = "INSERT INTO carro (modelo, marca, Ano, cor, ProprietarioID, ManutencaoID) VALUES ('$modelo', '$marca', '$ano', '$cor', 1, 1)";
     }
-    
     $conn->query($sql);
     header("Location: index.php");
     exit;
@@ -54,40 +44,31 @@ $carros = $conn->query("SELECT * FROM carro");
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Gerenciamento de Carros</title>
+    <title>Oficina - Carros</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="menu-navegacao">
-    <a href="index.php" class="btn-menu">Carros</a>
-    <a href="listamanutencao.php" class="btn-menu">Manutenções</a>
-    <a href="listaproprietarios.php" class="btn-menu">Proprietários</a>
+    <?php if (isset($_SESSION['logado'])): ?>
+        <a href="logout.php" class="btn-sair-topo">SAIR</a>
+    <?php endif; ?>
 
-    <?php if (isset($_SESSION['logado']) && $_SESSION['logado'] === true): ?>
-        <a href="logout.php" class="btn-menu" style="background-color: #e74c3c;">Sair (<?= $_SESSION['usuario_nome'] ?>)</a>
-    <?php else ?>
-        <a href="login.php" class="btn-menu btn-login">Login</a>
-    <?php endif ?>
-</div>
-</div>
-</div>
-    <h2><?= $editData ? "Editar Carro" : "Adicionar Novo Carro" ?></h2>
-    
+    <div class="menu-navegacao">
+        <a href="index.php" class="btn-menu">Carros</a>
+        <a href="listamanutencao.php" class="btn-menu">Manutenções</a>
+        <a href="listaproprietarios.php" class="btn-menu">Proprietários</a>
+    </div>
+
+    <h1>Gerenciamento de Carros</h1>
+
     <div class="form-container">
+        <h2><?= $editData ? "Editar Carro" : "Cadastrar Novo Carro" ?></h2>
         <form method="POST">
             <input type="hidden" name="id" value="<?= $editData['CarroID'] ?? '' ?>">
-            <label>Modelo: <input type="text" name="modelo" value="<?= $editData['modelo'] ?? '' ?>" required></label>
-            <label>Marca: <input type="text" name="marca" value="<?= $editData['marca'] ?? '' ?>" required></label>
-            <label>Ano: <input type="number" name="ano" value="<?= $editData['Ano'] ?? '' ?>" required></label>
-            <label>Cor: <input type="text" name="cor" value="<?= $editData['cor'] ?? '' ?>" required></label>
-            
-            <button type="submit" name="salvar">Salvar Carro</button>
-            
-            <?php if ($editData): ?>
-                <a href="index.php" class="btn-cancelar">Cancelar</a>
-                <a href="index.php" class="btn-login">Login</a>
-
-            <?php endif; ?>
+            <input type="text" name="modelo" placeholder="Modelo" value="<?= $editData['modelo'] ?? '' ?>" required>
+            <input type="text" name="marca" placeholder="Marca" value="<?= $editData['marca'] ?? '' ?>" required>
+            <input type="number" name="ano" placeholder="Ano" value="<?= $editData['Ano'] ?? '' ?>" required>
+            <input type="text" name="cor" placeholder="Cor" value="<?= $editData['cor'] ?? '' ?>" required>
+            <button type="submit" name="salvar">Salvar Dados</button>
         </form>
     </div>
 
@@ -98,7 +79,7 @@ $carros = $conn->query("SELECT * FROM carro");
             </tr>
         </thead>
         <tbody>
-            <?php while ($row = $carros->fetch_assoc()): ?>
+            <?php while($row = $carros->fetch_assoc()): ?>
             <tr>
                 <td><?= $row['CarroID'] ?></td>
                 <td><?= $row['modelo'] ?></td>
@@ -106,15 +87,12 @@ $carros = $conn->query("SELECT * FROM carro");
                 <td><?= $row['Ano'] ?></td>
                 <td><?= $row['cor'] ?></td>
                 <td>
-                    <a class="edit" href="?edit=<?= $row['CarroID'] ?>">Editar</a>
-                    <a class="delete" href="?delete=<?= $row['CarroID'] ?>" onclick="return confirm('Excluir este carro?')">Excluir</a>
+                    <a href="?edit=<?= $row['CarroID'] ?>" class="edit">Editar</a>
+                    <a href="?delete=<?= $row['CarroID'] ?>" class="delete" onclick="return confirm('Tem certeza?')">Excluir</a>
                 </td>
             </tr>
             <?php endwhile; ?>
         </tbody>
     </table>
-
 </body>
 </html>
-<?php 
-

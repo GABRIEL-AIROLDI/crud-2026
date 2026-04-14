@@ -51,17 +51,18 @@ $manutencoes = $conn->query("SELECT * FROM manutencao");
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="menu-navegacao">
-    <a href="index.php" class="btn-menu">Carros</a>
-    <a href="listamanutencao.php" class="btn-menu">Manutenções</a>
-    <a href="listaproprietarios.php" class="btn-menu">Proprietários</a>
-
-    <?php if (isset($_SESSION['logado']) && $_SESSION['logado'] === true): ?>
-        <a href="logout.php" class="btn-menu" style="background-color: #e74c3c;">Sair (<?= $_SESSION['usuario_email'] ?>)</a>
-    <?php else ?>
-        <a href="login.php" class="btn-menu btn-login">Login</a>
-    <?php endif ?>
-</div>
+<?php if (isset($_SESSION['logado']) && $_SESSION['logado'] === true): ?>
+        <a href="logout.php" class="btn-sair-topo">SAIR</a>
+    <?php endif; ?>
+    <div class="menu-navegacao">
+        <a href="index.php" class="btn-menu">Carros</a>
+        <a href="listamanutencao.php" class="btn-menu">Manutenções</a>
+        <a href="listaproprietarios.php" class="btn-menu">Proprietários</a>
+        
+        <?php if (!isset($_SESSION['logado'])): ?>
+            <a href="login.php" class="btn-menu btn-login">Login</a>
+        <?php endif; ?>
+    </div>
     <h2><?= $editData ? "Editar Manutenção" : "Registrar Nova Manutenção" ?></h2>
     
     <div class="form-container">

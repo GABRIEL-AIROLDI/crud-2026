@@ -6,8 +6,7 @@ if (isset($_POST['entrar'])) {
     $email = $_POST['email'];
     $senha = $_POST['senha'];
 
-    $stmt = $conn->prepare("SELECT UsuarioID, nome, senha FROM usuarios WHERE email = ?");
-    
+    $stmt = $conn->prepare("SELECT UsuarioID, senha FROM usuarios WHERE email = ?");    
     if (!$stmt) {
         die("Erro no banco: " . $conn->error);
     }
@@ -23,7 +22,6 @@ if (isset($_POST['entrar'])) {
             $_SESSION['logado'] = true;
             $_SESSION['usuario_id'] = $usuario['UsuarioID'];
             $_SESSION['usuario_email'] = $email; 
-            $_SESSION['usuario_nome'] = $usuario['nome']; // Salvando o nome na sessão
             
             header("Location: index.php");
             exit;
